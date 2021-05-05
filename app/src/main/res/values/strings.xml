@@ -1,3 +1,20 @@
 <resources>
-    <string name="app_name">Prosjekt_2</string>
+    <string name="app_name">Prosjekt 2</string>
+
+    <string name="protocol">https://</string>
+    <string name="domain">generic-game-service.herokuapp.com</string>
+    <string name="base_path">/Game</string>
+    <string name="create_game_path">/</string>
+    <string name="join_game_path">/%1s/join</string>
+    <string name="poll_game_path">/%1s/poll</string>
+    <string name="update_game_path">/%1s/update</string>
+    <string name="game_service_key">OzvIa676yG</string>
+
+    <string name="tre_pa_rad_logo">Tre på rad logo</string>
+    <string name="tre_pa_rad">Tre på rad</string>
+    <string name="start">Start</string>
+    <string name="join">Join</string>
+
+    <string name="player_name">Player name</string>
+    <string name="game_id">Game ID</string>
 </resources>

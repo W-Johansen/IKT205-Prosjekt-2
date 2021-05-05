@@ -9,7 +9,6 @@ import com.prosjekt.prosjekt_2.App
 import com.prosjekt.prosjekt_2.R
 import com.prosjekt.prosjekt_2.api.data.Game
 import com.prosjekt.prosjekt_2.api.data.GameState
-import com.prosjekt.prosjekt_2.api.data.toJSONArray
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -32,6 +31,16 @@ object GameService {
     /// NOTE: One posible way of constructing a list of API url. You want to construct the urls so that you can support different environments (i.e. Debug, Test, Prod etc)
     private enum class APIEndpoints(val url:String) {
         CREATE_GAME("%1s%2s%3s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path))),
+        JOIN_GAME("%1s%2s%3s%4s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path), context.getString(R.string.join_game_path)))
+
+        /*
+        // Litt rart?
+        companion object {
+            fun JOIN_GAME(gameId: String):String{
+                return "%1s%2s%3s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path),gameId,context.getString(R.string.join))
+            }
+        }*/
+
     }
 
 
@@ -42,7 +51,7 @@ object GameService {
         val requestData = JSONObject()
 
         requestData.put("player", playerId)
-        requestData.put("state", toJSONArray(state))
+        requestData.put("state", state.toJSONArray())
 
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, requestData,
@@ -66,6 +75,33 @@ object GameService {
     }
 
     fun joinGame(playerId:String, gameId:String, callback: GameServiceCallback){
+
+        val url = APIEndpoints.JOIN_GAME.url.format(gameId) // Kanskje fjære .format til inni APIEndpoints elns.
+
+        val requestData = JSONObject()
+
+        requestData.put("player", playerId)
+        requestData.put("gameId", gameId)
+
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, requestData,
+            {
+                // Success game created.
+                val game = Gson().fromJson(it.toString(0), Game::class.java)
+                callback(game,null)
+            }, {
+                // Error creating new game.
+                callback(null, it.networkResponse.statusCode)
+            } ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                headers["Game-Service-Key"] = context.getString(R.string.game_service_key)
+                return headers
+            }
+        }
+
+        requestQue.add(request)
 
     }
 

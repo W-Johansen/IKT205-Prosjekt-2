@@ -12,7 +12,7 @@ object GameManager {
     var player:String? = null
     var state:GameState? = null
 
-    val StartingGameState:GameState = listOf(listOf(0,0,0),listOf(0,0,0),listOf(0,0,0))
+    val StartingGameState = GameState(listOf(listOf(0,0,0),listOf(0,0,0),listOf(0,0,0)))
 
     fun createGame(player:String){
 
@@ -21,10 +21,23 @@ object GameManager {
                 ///TODO("What is the error code? 406 you forgot something in the header. 500 the server di not like what you gave it")
                 Log.e(TAG, err.toString())
             } else {
+                Log.d(TAG, "GameID: " + game!!.gameId)
                 /// TODO("We have a game. What to do?)
             }
         }
 
+    }
+
+    fun joinGame(player:String, gameId:String){
+        GameService.joinGame(player,gameId) { game: Game?, err: Int? ->
+            if (err != null) {
+                ///TODO("What is the error code? 406 you forgot something in the header. 500 the server di not like what you gave it")
+                Log.e(TAG, err.toString())
+            } else {
+                Log.d(TAG, "Joined game: " + game!!.gameId + "\n Players: " + game.players)
+                /// TODO("We have a game. What to do?)
+            }
+        }
     }
 
 

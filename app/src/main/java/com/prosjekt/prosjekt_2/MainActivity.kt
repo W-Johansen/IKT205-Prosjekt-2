@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        App.Companion.context = this
+        App.Companion.context = this.application
 
         binding.startGameButton.setOnClickListener {
             createNewGame()
@@ -49,5 +49,6 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
 
     override fun onDialogJoinGame(player: String, gameId: String) {
         Log.d(TAG, "$player $gameId")
+        GameManager.joinGame(player, gameId)
     }
 }

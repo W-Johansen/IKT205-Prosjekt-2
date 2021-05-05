@@ -10,7 +10,7 @@ class App:Application() {
     //}
 
     companion object{
-        lateinit var context: Context
+        lateinit var context: Application
     }
 
     override fun onCreate() {

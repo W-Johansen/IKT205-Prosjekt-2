@@ -1,14 +1,17 @@
 package com.prosjekt.prosjekt_2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.prosjekt.prosjekt_2.api.GameService
 import com.prosjekt.prosjekt_2.api.data.Game
 import com.prosjekt.prosjekt_2.databinding.ActivityMainBinding
 import com.prosjekt.prosjekt_2.dialogs.CreateGameDialog
 import com.prosjekt.prosjekt_2.dialogs.GameDialogListener
 import com.prosjekt.prosjekt_2.dialogs.JoinGameDialog
+import kotlin.reflect.KClass
 
 class MainActivity : AppCompatActivity(), GameDialogListener {
 
@@ -21,6 +24,7 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         App.Companion.context = this.application
+        GameManager.mainActivity = this
 
         binding.startGameButton.setOnClickListener {
             createNewGame()
@@ -50,5 +54,11 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
     override fun onDialogJoinGame(player: String, gameId: String) {
         Log.d(TAG, "$player $gameId")
         GameManager.joinGame(player, gameId)
+    }
+
+    // o.O
+    fun <T> beginActivity(activity: Class<T>){
+        val intent = Intent(this, activity)
+        startActivity(intent)
     }
 }

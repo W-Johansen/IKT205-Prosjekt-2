@@ -31,7 +31,9 @@ object GameService {
     /// NOTE: One posible way of constructing a list of API url. You want to construct the urls so that you can support different environments (i.e. Debug, Test, Prod etc)
     private enum class APIEndpoints(val url:String) {
         CREATE_GAME("%1s%2s%3s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path))),
-        JOIN_GAME("%1s%2s%3s%4s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path), context.getString(R.string.join_game_path)))
+        JOIN_GAME("%1s%2s%3s%4s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path), context.getString(R.string.join_game_path))),
+        UPDATE_GAME("%1s%2s%3s%4s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path), context.getString(R.string.update_game_path))),
+        POLL_GAME("%1s%2s%3s%4s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path), context.getString(R.string.poll_game_path)))
 
         /*
         // Litt rart?
@@ -40,7 +42,6 @@ object GameService {
                 return "%1s%2s%3s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path),gameId,context.getString(R.string.join))
             }
         }*/
-
     }
 
 
@@ -52,7 +53,6 @@ object GameService {
 
         requestData.put("player", playerId)
         requestData.put("state", state.toJSONArray())
-
 
         val request = object : JsonObjectRequest(Request.Method.POST, url, requestData,
             {
@@ -83,14 +83,13 @@ object GameService {
         requestData.put("player", playerId)
         requestData.put("gameId", gameId)
 
-
         val request = object : JsonObjectRequest(Request.Method.POST, url, requestData,
             {
-                // Success game created.
+                // Success game joined.
                 val game = Gson().fromJson(it.toString(0), Game::class.java)
                 callback(game,null)
             }, {
-                // Error creating new game.
+                // Error joining game.
                 callback(null, it.networkResponse.statusCode)
             } ) {
             override fun getHeaders(): MutableMap<String, String> {
@@ -106,11 +105,54 @@ object GameService {
     }
 
     fun updateGame(gameId: String, gameState:GameState, callback: GameServiceCallback){
+        val url = APIEndpoints.UPDATE_GAME.url.format(gameId)
 
+        val requestData = JSONObject()
+
+        requestData.put("gameId", gameId)
+        requestData.put("state", gameState.toJSONArray())
+
+        val request = object : JsonObjectRequest(Request.Method.POST, url, requestData,
+            {
+                // Success game updated.
+                val game = Gson().fromJson(it.toString(0), Game::class.java)
+                callback(game,null)
+            }, {
+                // Error updating game.
+                callback(null, it.networkResponse.statusCode)
+            } ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                headers["Game-Service-Key"] = context.getString(R.string.game_service_key)
+                return headers
+            }
+        }
+
+        requestQue.add(request)
     }
 
-    fun pollGame(gameId: String,callback:GameServiceCallback){
+    fun pollGame(gameId: String, callback:GameServiceCallback){
+        val url = APIEndpoints.POLL_GAME.url.format(gameId) // Kanskje fjære .format til inni APIEndpoints elns. om det går
 
+        val request = object : JsonObjectRequest(Request.Method.GET, url, null,
+            {
+                // Success game polled.
+                val game = Gson().fromJson(it.toString(0), Game::class.java)
+                callback(game,null)
+            }, {
+                // Error polling game.
+                callback(null, it.networkResponse.statusCode)
+            } ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                headers["Game-Service-Key"] = context.getString(R.string.game_service_key)
+                return headers
+            }
+        }
+
+        requestQue.add(request)
     }
 
 }

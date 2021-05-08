@@ -18,7 +18,7 @@ import org.json.JSONArray
     return arrayState
 }*/
 
-data class GameState(var state: List<List<Int>>){
+data class GameState(var state: MutableList<MutableList<Int>>){
     fun toJSONArray():JSONArray{
         val arrayState = JSONArray()
 
@@ -35,4 +35,4 @@ data class GameState(var state: List<List<Int>>){
 }
 
 @Parcelize
-data class Game(var players:MutableList<String>, var gameId:String, var state:List<List<Int>> ):Parcelable
+data class Game(var players:MutableList<String>, var gameId:String, var state:MutableList<MutableList<Int>> ):Parcelable

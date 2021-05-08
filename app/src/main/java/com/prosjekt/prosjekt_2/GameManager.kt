@@ -28,10 +28,10 @@ object GameManager {
             return t
         }
 
-    val StartingGameState = GameState(listOf(listOf(0,0,0),listOf(0,0,0),listOf(0,0,0)))
+    val StartingGameState = GameState(mutableListOf(mutableListOf(0,0,0),mutableListOf(0,0,0),mutableListOf(0,0,0)))
 
     // Brude kaskje være null?
-    var _game:Game = Game(mutableListOf(""),"",  listOf(listOf(0,0,0),listOf(0,0,0),listOf(0,0,0)))
+    var _game:Game = Game(mutableListOf(""),"",  mutableListOf(mutableListOf(0,0,0),mutableListOf(0,0,0),mutableListOf(0,0,0)))
 
     fun createGame(player:String){
 
@@ -65,12 +65,13 @@ object GameManager {
         }
     }
 
-    fun updateGame(gameId:String, gameState:GameState){
+    fun updateGame(gameId:String, gameState:GameState, callback:PollServiceCallback){
         GameService.updateGame(gameId, gameState) { game: Game?, err: Int? ->
             if (err != null) {
                 Log.e(TAG, "Error updating game, error code: $err")
             } else {
                 Log.d(TAG, "Updated game: " + game!!.gameId)
+                callback(game)
             }
         }
     }

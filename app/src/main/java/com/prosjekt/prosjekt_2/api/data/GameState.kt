@@ -35,4 +35,4 @@ data class GameState(var state: List<List<Int>>){
 }
 
 @Parcelize
-data class Game(val players:MutableList<String>, val gameId:String, val state:List<List<Int>> ):Parcelable
+data class Game(var players:MutableList<String>, var gameId:String, var state:List<List<Int>> ):Parcelable

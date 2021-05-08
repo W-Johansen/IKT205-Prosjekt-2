@@ -57,8 +57,12 @@ class MainActivity : AppCompatActivity(), GameDialogListener {
     }
 
     // o.O
-    fun <T> beginActivity(activity: Class<T>){
+    fun <T> beginActivity(activity: Class<T>, isHost:Boolean?){
         val intent = Intent(this, activity)
+
+        if (isHost != null)
+            intent.putExtra("isHost", isHost)
+
         startActivity(intent)
     }
 }

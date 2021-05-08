@@ -5,24 +5,46 @@ import com.prosjekt.prosjekt_2.api.GameService
 import com.prosjekt.prosjekt_2.api.data.Game
 import com.prosjekt.prosjekt_2.api.data.GameState
 
+typealias PollServiceCallback = (game:Game? ) -> Unit
+
 object GameManager {
 
     val TAG:String = "GameManager"
 
-    var player:String? = null
+    lateinit var mainActivity:MainActivity
+
+    var _player:String? = null
     var state:GameState? = null
+    var turn:Int = 0
+        get() {
+            var t:Int = 0
+            _game.state.forEach {
+                it.forEach {
+                    if (it != 0)
+                        t++
+                }
+            }
+            turn = t // Nødvendig?
+            return t
+        }
 
     val StartingGameState = GameState(listOf(listOf(0,0,0),listOf(0,0,0),listOf(0,0,0)))
+
+    // Brude kaskje være null?
+    var _game:Game = Game(mutableListOf(""),"",  listOf(listOf(0,0,0),listOf(0,0,0),listOf(0,0,0)))
 
     fun createGame(player:String){
 
         GameService.createGame(player,StartingGameState) { game: Game?, err: Int? ->
             if(err != null){
-                ///TODO("What is the error code? 406 you forgot something in the header. 500 the server di not like what you gave it")
-                Log.e(TAG, err.toString())
+                Log.e(TAG, "Error creating game, error code: $err")
             } else {
-                Log.d(TAG, "GameID: " + game!!.gameId)
-                /// TODO("We have a game. What to do?)
+                Log.d(TAG, "Created game with gameID: " + game!!.gameId)
+                _game.players = game.players
+                _game.gameId = game.gameId
+                _game.state = StartingGameState.state
+                _player = player
+                mainActivity.beginActivity(GameActivity::class.java, true)
             }
         }
 
@@ -31,15 +53,40 @@ object GameManager {
     fun joinGame(player:String, gameId:String){
         GameService.joinGame(player,gameId) { game: Game?, err: Int? ->
             if (err != null) {
-                ///TODO("What is the error code? 406 you forgot something in the header. 500 the server di not like what you gave it")
-                Log.e(TAG, err.toString())
+                Log.e(TAG, "Error joining game, error code: $err")
             } else {
                 Log.d(TAG, "Joined game: " + game!!.gameId + "\n Players: " + game.players)
-                /// TODO("We have a game. What to do?)
+                _game.players = game.players
+                _game.gameId = game.gameId
+                _game.state = game.state
+                _player = player
+                mainActivity.beginActivity(GameActivity::class.java, false)
             }
         }
     }
 
+    fun updateGame(gameId:String, gameState:GameState){
+        GameService.updateGame(gameId, gameState) { game: Game?, err: Int? ->
+            if (err != null) {
+                Log.e(TAG, "Error updating game, error code: $err")
+            } else {
+                Log.d(TAG, "Updated game: " + game!!.gameId)
+            }
+        }
+    }
 
+    fun pollGame(gameId:String, callback:PollServiceCallback){
+        GameService.pollGame(gameId) { game: Game?, err: Int? ->
+            if (err != null) {
+                Log.e(TAG, err.toString())
+            } else {
+                Log.d(TAG, "Polled game: " + game!!.gameId + "\n Players: " + game.players)
+                _game.players = game.players
+                _game.gameId = game.gameId
+                _game.state = game.state
+                callback(game)
+            }
+        }
+    }
 
 }

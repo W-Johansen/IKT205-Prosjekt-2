@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,30 +15,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/turnInd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PLACEHOLDER"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="25dp">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/_n00"
+                android:id="@+id/n00"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
                 android:text=""
-                android:layout_margin="4dp"/>
+                android:layout_margin="4dp" />
 
             <Button
-                android:id="@+id/_n01"
+                android:id="@+id/b01"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_weight="1"
-                android:text=""
                 android:layout_margin="4dp"
-                />
+                android:layout_weight="1"
+                android:text=""
+                app:iconTintMode="multiply" />
 
             <Button
-                android:id="@+id/_n02"
+                android:id="@+id/b02"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
@@ -54,7 +73,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/_n10"
+                android:id="@+id/b10"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
@@ -62,7 +81,7 @@
                 android:layout_margin="4dp"/>
 
             <Button
-                android:id="@+id/_n11"
+                android:id="@+id/b11"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
@@ -71,7 +90,7 @@
                 />
 
             <Button
-                android:id="@+id/_n12"
+                android:id="@+id/b12"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
@@ -86,14 +105,14 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/_n20"
+                android:id="@+id/b20"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
                 android:text="" android:layout_margin="4dp"/>
 
             <Button
-                android:id="@+id/_n21"
+                android:id="@+id/b21"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
@@ -101,7 +120,7 @@
                 android:layout_margin="4dp"/>
 
             <Button
-                android:id="@+id/_n22"
+                android:id="@+id/b22"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
@@ -109,6 +128,21 @@
                 android:layout_margin="4dp"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/player_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Player 1: X"
+            android:textStyle="normal" />
+        <TextView
+            android:id="@+id/player_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Player 2: O"
+            android:textStyle="normal" />
+
+    </LinearLayout>
 
     </LinearLayout>
 

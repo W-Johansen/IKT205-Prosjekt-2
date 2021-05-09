@@ -44,10 +44,11 @@
                 android:id="@+id/b00"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_weight="1"
-                android:text=""
                 android:layout_margin="4dp"
-                android:onClick="btnEvent"/>
+                android:layout_weight="1"
+                android:onClick="btnEvent"
+                android:text=""
+                android:textSize="34sp" />
 
             <Button
                 android:id="@+id/b01"
@@ -56,7 +57,8 @@
                 android:layout_weight="1"
                 android:text=""
                 android:layout_margin="4dp"
-                android:onClick="btnEvent"/>
+                android:onClick="btnEvent"
+                android:textSize="34sp"/>
 
             <Button
                 android:id="@+id/b02"
@@ -65,7 +67,8 @@
                 android:layout_weight="1"
                 android:text=""
                 android:layout_margin="4dp"
-                android:onClick="btnEvent"/>
+                android:onClick="btnEvent"
+                android:textSize="34sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -80,7 +83,8 @@
                 android:layout_weight="1"
                 android:text=""
                 android:layout_margin="4dp"
-                android:onClick="btnEvent"/>
+                android:onClick="btnEvent"
+                android:textSize="34sp"/>
 
             <Button
                 android:id="@+id/b11"
@@ -89,7 +93,8 @@
                 android:layout_weight="1"
                 android:text=""
                 android:layout_margin="4dp"
-                android:onClick="btnEvent"/>
+                android:onClick="btnEvent"
+                android:textSize="34sp"/>
 
             <Button
                 android:id="@+id/b12"
@@ -98,7 +103,8 @@
                 android:layout_weight="1"
                 android:text=""
                 android:layout_margin="4dp"
-                android:onClick="btnEvent"/>
+                android:onClick="btnEvent"
+                android:textSize="34sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -113,7 +119,8 @@
                 android:layout_weight="1"
                 android:text=""
                 android:layout_margin="4dp"
-                android:onClick="btnEvent"/>
+                android:onClick="btnEvent"
+                android:textSize="34sp"/>
 
             <Button
                 android:id="@+id/b21"
@@ -122,7 +129,8 @@
                 android:layout_weight="1"
                 android:text=""
                 android:layout_margin="4dp"
-                android:onClick="btnEvent"/>
+                android:onClick="btnEvent"
+                android:textSize="34sp"/>
 
             <Button
                 android:id="@+id/b22"
@@ -131,7 +139,8 @@
                 android:layout_weight="1"
                 android:text=""
                 android:layout_margin="4dp"
-                android:onClick="btnEvent"/>
+                android:onClick="btnEvent"
+                android:textSize="34sp"/>
 
         </LinearLayout>
 

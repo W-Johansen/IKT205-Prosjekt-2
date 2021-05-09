@@ -18,6 +18,11 @@ class GameActivity : AppCompatActivity() {
     var isPlayerTurn:Boolean = false
     var isStarted:Boolean = false
 
+    var rowCount = mutableListOf<Int>(0,0,0)
+    var colCount = mutableListOf<Int>(0,0,0)
+    var diaCount = mutableListOf<Int>(0,0,0)
+    var opsCount = mutableListOf<Int>(0,0,0)
+
     private lateinit var binding:ActivityGameBinding
 
     lateinit var btnList:List<List<Button>>
@@ -29,7 +34,7 @@ class GameActivity : AppCompatActivity() {
     private val updateTask = object : Runnable {
         override fun run(){
             pollUpdates()
-            mainHandler.postDelayed(this, 2000)
+            mainHandler.postDelayed(this, 500)
         }
     }
 
@@ -107,6 +112,10 @@ class GameActivity : AppCompatActivity() {
                     updateTurnDisplay()
 
                     mainHandler.removeCallbacks(updateTask)
+
+                    if (checkWin() != 0){
+                        isPlayerTurn = false
+                    }
                 }
 
                 else -> {
@@ -120,7 +129,7 @@ class GameActivity : AppCompatActivity() {
     fun updateBoardDisplay(){
         for (i in 0..2){
             for (j in 0..2){
-                btnList[i][j].text = localGame.state[i][j].toString()
+                btnList[i][j].text = if(localGame.state[i][j] == 1) "X" else if(localGame.state[i][j] == 2) "O" else ""
             }
         }
     }
@@ -133,19 +142,108 @@ class GameActivity : AppCompatActivity() {
                 binding.turnInd.text = "Opponents turn!"
             }
         }
+        if (checkWin() != 0){
+            when {
+                checkWin() == 1 -> {
+                    if(isHost){
+                        binding.turnInd.text = "You win!"
+                    } else {
+                        binding.turnInd.text = "You lose!"
+                    }
+                }
+
+                checkWin() == 2 -> {
+                    if(isHost){
+                        binding.turnInd.text = "You lose!"
+                    } else {
+                        binding.turnInd.text = "You win!"
+                    }
+                }
+
+                checkWin() == 3 -> {
+                    binding.turnInd.text = "Draw!"
+                }
+            }
+        }
     }
 
     fun changeState(x:Int, y:Int){
         if(localGame.state[x][y] == 0 && isPlayerTurn){
             localGame.state[x][y] = if(isHost) 1 else 2
-            updateBoardDisplay()
             isPlayerTurn = false
-            updateTurnDisplay()
 
-            GameManager.updateGame(localGame.gameId, GameState(localGame.state)){
-                mainHandler.post(updateTask)
-            }
+            updateBoardDisplay()
+            updateTurnDisplay()
+            updateGame()
         }
     }
 
+    fun updateGame(){
+        GameManager.updateGame(localGame.gameId, GameState(localGame.state)){
+            if (checkWin() == 0)
+                mainHandler.post(updateTask)
+        }
+    }
+
+    fun checkWin():Int{
+        // --- Draw ---
+        var t:Int = 0
+        localGame.state.forEach {
+            it.forEach {
+                if (it != 0)
+                    t++
+            }
+        }
+        if (t >= 9){
+            return 3
+        }
+
+        for (p in 1..2){
+
+            rowCount = mutableListOf<Int>(0,0,0)
+            colCount = mutableListOf<Int>(0,0,0)
+            diaCount = mutableListOf<Int>(0,0,0)
+            opsCount = mutableListOf<Int>(0,0,0)
+
+            for (x in 0..2){
+                for (y in 0..2){
+                    if (localGame.state[x][y] == p){
+                        rowCount[x] += 1
+                        colCount[y] += 1
+                        if (x == y) {
+                            diaCount[x] += 1
+                        }
+                        if (x + y + 1 == 3){
+                            opsCount[x] += 1
+                        }
+                    }
+                }
+            }
+
+            // --- row ---
+            rowCount.forEach {
+                if (it == 3)
+                    return p
+            }
+
+            // --- column ---
+            colCount.forEach {
+                if (it == 3)
+                    return p
+            }
+
+            // --- diagonal ---
+            if(diaCount.sum() == 3){
+                return p
+            }
+
+            // --- opposite ---
+            if(opsCount.sum() == 3){
+                return p
+            }
+        }
+
+        //Om ingen vinner
+        return 0
+    }
 }

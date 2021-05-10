@@ -1,5 +1,6 @@
 package com.prosjekt.prosjekt_2
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -221,29 +222,112 @@ class GameActivity : AppCompatActivity() {
             }
 
             // --- row ---
-            rowCount.forEach {
-                if (it == 3)
+            rowCount.forEachIndexed { i, it ->
+                if (it == 3){
+                    displayWin(0, i)
                     return p
+                }
             }
 
             // --- column ---
-            colCount.forEach {
-                if (it == 3)
+            colCount.forEachIndexed { i, it ->
+                if (it == 3){
+                    displayWin(1, i)
                     return p
+                }
             }
 
             // --- diagonal ---
             if(diaCount.sum() == 3){
+                displayWin(2)
                 return p
             }
 
             // --- opposite ---
             if(opsCount.sum() == 3){
+                displayWin(3)
                 return p
             }
         }
 
         //Om ingen vinner
         return 0
+    }
+
+    fun displayWin(type:Int, i:Int = 0){
+        // type: 0 = row, 1 = column, 2 = diagonal, 3 = opposite diagonal
+        var color:Int = 0
+        when {
+            type == 0 -> {
+                if (btnList[i][0].text == "X"){
+                    if (isHost){
+                        color = Color.GREEN
+                    } else {
+                        color = Color.RED
+                    }
+                } else if (btnList[i][0].text == "O"){
+                    if (isHost){
+                        color = Color.RED
+                    } else {
+                        color = Color.GREEN
+                    }
+                }
+                for (k in 0..2)
+                    btnList[i][k].setBackgroundColor(color)
+            }
+            type == 1 -> {
+                if (btnList[0][i].text == "X"){
+                    if (isHost){
+                        color = Color.GREEN
+                    } else {
+                        color = Color.RED
+                    }
+                } else if (btnList[0][i].text == "O"){
+                    if (isHost){
+                        color = Color.RED
+                    } else {
+                        color = Color.GREEN
+                    }
+                }
+                for (k in 0..2)
+                    btnList[k][i].setBackgroundColor(color)
+            }
+            type == 2 -> {
+                if (btnList[0][0].text == "X"){
+                    if (isHost){
+                        color = Color.GREEN
+                    } else {
+                        color = Color.RED
+                    }
+                } else if (btnList[0][0].text == "O"){
+                    if (isHost){
+                        color = Color.RED
+                    } else {
+                        color = Color.GREEN
+                    }
+                }
+                for (k in 0..2){
+                    btnList[k][k].setBackgroundColor(color)
+                }
+            }
+            type == 3 -> {
+                if (btnList[0][2].text == "X"){
+                    if (isHost){
+                        color = Color.GREEN
+                    } else {
+                        color = Color.RED
+                    }
+                } else if (btnList[0][2].text == "O"){
+                    if (isHost){
+                        color = Color.RED
+                    } else {
+                        color = Color.GREEN
+                    }
+                }
+                for (k in 0..2){
+                    btnList[k][2-k].setBackgroundColor(color)
+                }
+            }
+        }
     }
 }

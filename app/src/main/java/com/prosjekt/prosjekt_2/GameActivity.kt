@@ -65,6 +65,25 @@ class GameActivity : AppCompatActivity() {
             binding.player2.text = "Waiting for opponent..."
         }
 
+        binding.playAgain.setOnClickListener {
+            GameManager.restartGame(localGame.gameId){
+                if(isHost){
+                    isPlayerTurn = true
+                } else {
+                    isPlayerTurn = false
+                    mainHandler.post(updateTask)
+                }
+                localGame = it!!
+                updateBoardDisplay()
+                clearWinDisplay()
+                updateTurnDisplay()
+
+                binding.playAgain.visibility = View.GONE
+            }
+        }
+
+        binding.playAgain.visibility = View.GONE
+
         updateTurnDisplay()
         updateBoardDisplay()
         mainHandler.post(updateTask)
@@ -148,21 +167,26 @@ class GameActivity : AppCompatActivity() {
                 checkWin() == 1 -> {
                     if(isHost){
                         binding.turnInd.text = "You win!"
+                        binding.playAgain.visibility = View.VISIBLE
                     } else {
                         binding.turnInd.text = "You lose!"
+                        binding.playAgain.visibility = View.VISIBLE
                     }
                 }
 
                 checkWin() == 2 -> {
                     if(isHost){
                         binding.turnInd.text = "You lose!"
+                        binding.playAgain.visibility = View.VISIBLE
                     } else {
                         binding.turnInd.text = "You win!"
+                        binding.playAgain.visibility = View.VISIBLE
                     }
                 }
 
                 checkWin() == 3 -> {
                     binding.turnInd.text = "Draw!"
+                    binding.playAgain.visibility = View.VISIBLE
                 }
             }
         }
@@ -327,6 +351,14 @@ class GameActivity : AppCompatActivity() {
                 for (k in 0..2){
                     btnList[k][2-k].setBackgroundColor(color)
                 }
+            }
+        }
+    }
+
+    fun clearWinDisplay(){
+        btnList.forEach{
+            it.forEach {
+                it.setBackgroundColor(getColor(R.color.design_default_color_primary))
             }
         }
     }

@@ -299,6 +299,7 @@ class GameActivity : AppCompatActivity() {
                 for (k in 0..2)
                     btnList[i][k].setBackgroundColor(color)
             }
+
             type == 1 -> {
                 if (btnList[0][i].text == "X"){
                     if (isHost){
@@ -316,6 +317,7 @@ class GameActivity : AppCompatActivity() {
                 for (k in 0..2)
                     btnList[k][i].setBackgroundColor(color)
             }
+
             type == 2 -> {
                 if (btnList[0][0].text == "X"){
                     if (isHost){
@@ -334,6 +336,7 @@ class GameActivity : AppCompatActivity() {
                     btnList[k][k].setBackgroundColor(color)
                 }
             }
+
             type == 3 -> {
                 if (btnList[0][2].text == "X"){
                     if (isHost){

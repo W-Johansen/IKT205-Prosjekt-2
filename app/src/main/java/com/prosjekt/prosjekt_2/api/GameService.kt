@@ -9,39 +9,23 @@ import com.prosjekt.prosjekt_2.App
 import com.prosjekt.prosjekt_2.R
 import com.prosjekt.prosjekt_2.api.data.Game
 import com.prosjekt.prosjekt_2.api.data.GameState
-import org.json.JSONArray
 import org.json.JSONObject
 
 
 typealias GameServiceCallback = (state:Game?, errorCode:Int? ) -> Unit
 
-/*  NOTE:
-    Using object expression to make GameService a Singleton.
-    Why? Because there should only be one active GameService ever.
- */
 
 object GameService {
 
-    /// NOTE: Do not want to have App.context all over the code. Also it is nice if we later want to support different contexts
     private val context = App.context
 
-    /// NOTE: God practice to use a que for performing requests.
     private val requestQue:RequestQueue = Volley.newRequestQueue(context)
 
-    /// NOTE: One posible way of constructing a list of API url. You want to construct the urls so that you can support different environments (i.e. Debug, Test, Prod etc)
     private enum class APIEndpoints(val url:String) {
         CREATE_GAME("%1s%2s%3s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path))),
         JOIN_GAME("%1s%2s%3s%4s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path), context.getString(R.string.join_game_path))),
         UPDATE_GAME("%1s%2s%3s%4s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path), context.getString(R.string.update_game_path))),
         POLL_GAME("%1s%2s%3s%4s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path), context.getString(R.string.poll_game_path)))
-
-        /*
-        // Litt rart?
-        companion object {
-            fun JOIN_GAME(gameId: String):String{
-                return "%1s%2s%3s".format(context.getString(R.string.protocol), context.getString(R.string.domain),context.getString(R.string.base_path),gameId,context.getString(R.string.join))
-            }
-        }*/
     }
 
 

@@ -12,8 +12,8 @@
 
     <string name="tre_pa_rad_logo">Tre på rad logo</string>
     <string name="tre_pa_rad">Tre på rad</string>
-    <string name="start">Start</string>
-    <string name="join">Join</string>
+    <string name="start">Create Game</string>
+    <string name="join">Join Game</string>
 
     <string name="player_name">Player name</string>
     <string name="game_id">Game ID</string>

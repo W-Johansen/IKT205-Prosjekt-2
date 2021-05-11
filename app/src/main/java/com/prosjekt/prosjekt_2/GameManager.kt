@@ -1,6 +1,7 @@
 package com.prosjekt.prosjekt_2
 
 import android.util.Log
+import android.widget.Toast
 import com.prosjekt.prosjekt_2.api.GameService
 import com.prosjekt.prosjekt_2.api.data.Game
 import com.prosjekt.prosjekt_2.api.data.GameState
@@ -14,19 +15,6 @@ object GameManager {
     lateinit var mainActivity:MainActivity
 
     var _player:String? = null
-    var state:GameState? = null
-    var turn:Int = 0
-        get() {
-            var t:Int = 0
-            _game.state.forEach {
-                it.forEach {
-                    if (it != 0)
-                        t++
-                }
-            }
-            turn = t // Nødvendig?
-            return t
-        }
 
     val StartingGameState = GameState(mutableListOf(mutableListOf(0,0,0),mutableListOf(0,0,0),mutableListOf(0,0,0)))
 
@@ -38,6 +26,7 @@ object GameManager {
         GameService.createGame(player,StartingGameState) { game: Game?, err: Int? ->
             if(err != null){
                 Log.e(TAG, "Error creating game, error code: $err")
+                Toast.makeText(mainActivity, "Could not create game", Toast.LENGTH_SHORT).show()
             } else {
                 Log.d(TAG, "Created game with gameID: " + game!!.gameId)
                 _game.players = game.players
@@ -54,6 +43,8 @@ object GameManager {
         GameService.joinGame(player,gameId) { game: Game?, err: Int? ->
             if (err != null) {
                 Log.e(TAG, "Error joining game, error code: $err")
+                Toast.makeText(mainActivity, "Could not join game", Toast.LENGTH_SHORT).show()
+
             } else {
                 Log.d(TAG, "Joined game: " + game!!.gameId + "\n Players: " + game.players)
                 _game.players = game.players
